@@ -59,6 +59,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javax.swing.SwingConstants;
 public class FrameNewSr extends JFrame {
 
 public static ArrayList<String> listBoom  = new ArrayList<>();	
@@ -101,6 +102,7 @@ public static ArrayList<String> listBoom  = new ArrayList<>();
 		contentPane.setLayout(null);		
 		
 		JLabel lblNewLabel = new JLabel("Nr Lokalizacji");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel.setBounds(47, 23, 87, 29);
 		contentPane.add(lblNewLabel);
@@ -144,36 +146,39 @@ public static ArrayList<String> listBoom  = new ArrayList<>();
 		
 		
 		textFieldNrN.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textFieldNrN.setBounds(167, 29, 86, 20);
+		textFieldNrN.setBounds(167, 29, 86, 29);
 		contentPane.add(textFieldNrN);
 		textFieldNrN.setColumns(5);
 		
 		JLabel lblSystem = new JLabel("System");
+		lblSystem.setHorizontalAlignment(SwingConstants.LEFT);
 		lblSystem.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSystem.setBounds(47, 74, 87, 29);
+		lblSystem.setBounds(47, 124, 87, 29);
 		contentPane.add(lblSystem);
 		
 		JComboBox comboBoxSystemType = new JComboBox();
 		comboBoxSystemType.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		comboBoxSystemType.setModel(new DefaultComboBoxModel(new String[] {"", "GSM", "LTE", "UMTS"}));
-		comboBoxSystemType.setBounds(167, 80, 86, 20);
+		comboBoxSystemType.setBounds(167, 124, 86, 29);
 		contentPane.add(comboBoxSystemType);
 		
 		JLabel lblWystawiajcy = new JLabel("Wystawiaj\u0105cy");
+		lblWystawiajcy.setHorizontalAlignment(SwingConstants.LEFT);
 		lblWystawiajcy.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblWystawiajcy.setBounds(47, 133, 87, 29);
+		lblWystawiajcy.setBounds(47, 176, 87, 29);
 		contentPane.add(lblWystawiajcy);
 		
 		JLabel lblOdbierajcy = new JLabel("Odbieraj\u0105cy");
+		lblOdbierajcy.setHorizontalAlignment(SwingConstants.LEFT);
 		lblOdbierajcy.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblOdbierajcy.setBounds(47, 193, 87, 29);
+		lblOdbierajcy.setBounds(47, 227, 87, 29);
 		contentPane.add(lblOdbierajcy);
 		
 		
 		JComboBox comboBoxRecipientBy = new JComboBox();
 		comboBoxRecipientBy.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		comboBoxRecipientBy.setModel(new DefaultComboBoxModel(new String[] {""}));
-		comboBoxRecipientBy.setBounds(167, 197, 142, 20);
+		comboBoxRecipientBy.setBounds(167, 227, 142, 29);
 		contentPane.add(comboBoxRecipientBy);		
 		
 		AutoCompleteDecorator.decorate(comboBoxRecipientBy);		
@@ -209,7 +214,7 @@ public static ArrayList<String> listBoom  = new ArrayList<>();
 		JComboBox comboBoxOrderedBy = new JComboBox();
 		comboBoxOrderedBy.setModel(new DefaultComboBoxModel(new String[] {""}));
 		comboBoxOrderedBy.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		comboBoxOrderedBy.setBounds(167, 137, 142, 20);
+		comboBoxOrderedBy.setBounds(167, 176, 142, 29);
 		contentPane.add(comboBoxOrderedBy);
 		
 		  
@@ -244,13 +249,19 @@ public static ArrayList<String> listBoom  = new ArrayList<>();
 	      System.err.println(e.getMessage());
 	    }
 		
+		JComboBox comboBoxMno = new JComboBox();
+		comboBoxMno.setModel(new DefaultComboBoxModel(new String[] {"", "Orange", "T-Mobile"}));
+		comboBoxMno.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		comboBoxMno.setBounds(167, 73, 115, 29);
+		contentPane.add(comboBoxMno);
+		
 		
 		JButton btnSave = new JButton("Zapisz");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				
-				String nrN, systemType, recipientBy, orderedBy;
+				String nrN, systemType, recipientBy, orderedBy, mnoName;
 				int idrecipientBy, idOrderedBy, idOrders, phoneOrdered, phoneRecipient, nrNInt;
 				
 				System.out.println("@@@@@@@@@@@@@@@@@@@");
@@ -270,7 +281,9 @@ public static ArrayList<String> listBoom  = new ArrayList<>();
 						  nrN = textFieldNrN.getText();				
 						  systemType = comboBoxSystemType.getSelectedItem().toString();
 						  recipientBy = comboBoxRecipientBy.getSelectedItem().toString(); //!!!!! DODAC JESLI PSUTO TO KOMUNIKAT ZE PUSTO
-						  orderedBy = comboBoxOrderedBy.getSelectedItem().toString();							
+						  orderedBy = comboBoxOrderedBy.getSelectedItem().toString();	
+						  mnoName = comboBoxMno.getSelectedItem().toString();
+						 
 						  nrNInt = Integer.parseInt(nrN);
 							
 					      // create our mysql database connection	        
@@ -360,35 +373,33 @@ public static ArrayList<String> listBoom  = new ArrayList<>();
 								
 								FormulaEvaluator evaluator = workbookNewSr.getCreationHelper().createFormulaEvaluator();
 								
-								XSSFRow rowG9 = sheetNewSr.getRow(8);					
-								XSSFCell cellG9 = rowG9.getCell(6); //recipientBy 	komórka G9	
-								//XSSFCell cellG9 = rowG9.createCell(6);
-								cellG9.setCellValue(orderedBy);
+								XSSFRow rowH11 = sheetNewSr.getRow(10);					
+								XSSFCell cellH11 = rowH11.getCell(7); // 	cell H11									
+								cellH11.setCellValue(orderedBy);
 								
-								XSSFRow rowG11 = sheetNewSr.getRow(10);					
-								XSSFCell cellG11 = rowG11.getCell(6); //recipientBy 	komórka G11	
-								//XSSFCell cellG9 = rowG9.createCell(6);
-								cellG11.setCellValue(recipientBy);
+								XSSFRow rowH13 = sheetNewSr.getRow(12);					
+								XSSFCell cellH13 = rowH13.getCell(7); // 	cell H13									
+								cellH13.setCellValue(recipientBy);
 								
-								XSSFRow rowG5 = sheetNewSr.getRow(4);					
-								XSSFCell cellG5 = rowG5.getCell(6); //recipientBy 	komórka G6	
-								//XSSFCell cellG9 = rowG9.createCell(6);
-								cellG5.setCellValue(systemType);
+								XSSFRow rowH7 = sheetNewSr.getRow(6);					
+								XSSFCell cellH7 = rowH7.getCell(7); // 	cell H7									
+								cellH7.setCellValue(systemType);
 								
-								XSSFRow rowG6 = sheetNewSr.getRow(5);					
-								XSSFCell cellG6 = rowG6.getCell(6); //recipientBy 	komórka G6	
-								//XSSFCell cellG9 = rowG9.createCell(6);
-								cellG6.setCellValue(nrN);
+								XSSFRow rowI8 = sheetNewSr.getRow(7);					
+								XSSFCell cellI8 = rowI8.getCell(8); // 	cell I8									
+								cellI8.setCellValue(nrN);
 								
-								XSSFRow rowG10 = sheetNewSr.getRow(9);					
-								XSSFCell cellG10 = rowG10.getCell(6); //recipientBy 	komórka g10	
-								//XSSFCell cellG9 = rowG9.createCell(6);
-								cellG10.setCellValue(phoneOrdered);
+								XSSFRow rowJ8 = sheetNewSr.getRow(8);					
+								XSSFCell cellJ8 = rowJ8.getCell(8); // 	cell J8									
+								cellJ8.setCellValue(nrN);
 								
-								XSSFRow rowG12 = sheetNewSr.getRow(11);					
-								XSSFCell cellG12 = rowG12.getCell(6); //recipientBy 	komórka g12	
-								//XSSFCell cellG9 = rowG9.createCell(6);
-								cellG12.setCellValue(phoneRecipient);
+								XSSFRow rowH12 = sheetNewSr.getRow(11);					
+								XSSFCell cellH12 = rowH12.getCell(7); // 	cell H12									
+								cellH12.setCellValue(phoneOrdered);
+								
+								XSSFRow rowH14 = sheetNewSr.getRow(13);					
+								XSSFCell cellH14 = rowH14.getCell(7); // 	cell H14									
+								cellH14.setCellValue(phoneRecipient);
 								
 								
 								if(MainFrame2.rowCountTab2 >= 1)
@@ -404,17 +415,16 @@ public static ArrayList<String> listBoom  = new ArrayList<>();
 										partFinall = partFinall + partsAll;
 									}
 									String partFinal2 = partFinall.substring(0, partFinall.length() - 3);
-									XSSFRow rowG8 = sheetNewSr.getRow(7);					
-									XSSFCell cellG8 = rowG8.getCell(6); //recipientBy 	komórka G5	
-									//XSSFCell cellG9 = rowG9.createCell(6);
-									cellG8.setCellValue(partFinal2);
+									XSSFRow rowH10 = sheetNewSr.getRow(9);					
+									XSSFCell cellH10 = rowH10.getCell(7); // 	cell H10										
+									cellH10.setCellValue(partFinal2);
 								}
 								
 								
 								XSSFFormulaEvaluator.evaluateAllFormulaCells(workbookNewSr); // recalculating all formulas						
 								
 								Cell excelValue;
-								excelValue = workbookNewSr.getSheetAt(0).getRow(10).getCell(2);   //c11					pobiera wartosc komorki c11 - potrzebnej do wpisania do tabeli orders -titl_orders	
+								excelValue = workbookNewSr.getSheetAt(0).getRow(12).getCell(3);   //D13					get value from c11 - and insert to  orders -titl_orders	
 								String excelString = excelValue.getRichStringCellValue().toString();						
 								//JOptionPane.showMessageDialog(null, excelString);
 								
@@ -525,8 +535,16 @@ public static ArrayList<String> listBoom  = new ArrayList<>();
 		
 		
 		
-		btnSave.setBounds(137, 256, 89, 23);
+		btnSave.setBounds(137, 283, 102, 23);
 		contentPane.add(btnSave);
+		
+		JLabel lblOperator = new JLabel("Operator");
+		lblOperator.setHorizontalAlignment(SwingConstants.LEFT);
+		lblOperator.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblOperator.setBounds(47, 67, 87, 29);
+		contentPane.add(lblOperator);
+		
+		
 		
 		
 		//--------------------------
